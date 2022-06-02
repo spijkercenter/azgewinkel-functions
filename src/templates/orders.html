@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="nl">
+<head>
+    <title>Besteloverzicht van AZGewinkel</title>
+    <link rel="stylesheet" href="https://unpkg.com/github-markdown-css@4.0.0/github-markdown.css"/>
+    <style>
+        ul {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="markdown-body">
+    <h1>Besteloverzicht AZGewinkel</h1>
+    {% for customer in orders_by_customer.keys() %}
+    <h2>
+        {% if linkable %}
+        <a href="{{ url }}{{ customer.shortname }}">
+            {% endif %}
+            {{ customer.name }}
+            {% if linkable %}
+        </a>
+        {% endif %}
+    </h2>
+    {% for order in orders_by_customer[customer] %}
+    <h3># {{ order.id }} - {{ order.human_status }}</h3>
+    <ul>
+        {% for line_item in order.line_items %}
+        <li>
+            {{ line_item }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+    {% endfor %}
+    <h3>Proces</h3>
+    <ol>
+        {% for status in order_stati.values() %}
+        <li>{{ status }}</li>
+        {% endfor %}
+    </ol>
+        <p>Wil je de code van deze pagina zien of hieraan bijdragen?
+        <a href="https://github.com/spijkercenter/azgewinkel-functions"
+           target="_blank">Klik hier!</a>
+    </p>
+</div>
+</body>
+</html>

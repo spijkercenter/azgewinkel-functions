@@ -1,0 +1,5 @@
+# Function dependencies, for example:
+# package>=version
+requests==2.27.1
+flask==2.0.1
+cachetools==4.2.2
