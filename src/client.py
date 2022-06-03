@@ -1,11 +1,13 @@
 import json
 import os
 from types import SimpleNamespace
-from typing import Callable, Dict
+from typing import Callable, Dict, TypeVar
 
 import requests
 from cachetools import cached, TTLCache
 from requests.auth import HTTPBasicAuth
+
+T = TypeVar("T")
 
 
 class AZGewinkelClient:
@@ -32,7 +34,7 @@ class AZGewinkelClient:
         return data
 
     @cached(cache=TTLCache(maxsize=100, ttl=60))
-    def load(self, path: str, mapper: Callable[[any], object]) -> Dict[int, object]:
+    def load(self, path: str, mapper: Callable[[any], T]) -> Dict[int, T]:
         result = {}
         for item in self.get(path):
             result[item.id] = mapper(item)

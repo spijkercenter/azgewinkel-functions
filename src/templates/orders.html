@@ -14,9 +14,11 @@
 </head>
 <body>
 <div class="markdown-body">
-    <h1>Besteloverzicht AZGewinkel</h1>
+    <h1>Besteloverzicht <a href="{{ url }}">AZGewinkel</a></h1>
+    <p>Overzichtspagina voor <a href="https://azgewinkel.ddns.net">azgewinkel.ddns.net</a></p>
+    <h2>Per afdeling</h2>
     {% for customer in orders_by_customer.keys() %}
-    <h2>
+    <h3>
         {% if linkable %}
         <a href="{{ url }}{{ customer.shortname }}">
             {% endif %}
@@ -24,9 +26,9 @@
             {% if linkable %}
         </a>
         {% endif %}
-    </h2>
+    </h3>
     {% for order in orders_by_customer[customer] %}
-    <h3># {{ order.id }} - {{ order.human_status }}</h3>
+    <h4># {{ order.id }} - {{ order.status.name }}</h4>
     <ul>
         {% for line_item in order.line_items %}
         <li>
@@ -36,13 +38,20 @@
     </ul>
     {% endfor %}
     {% endfor %}
-    <h3>Proces</h3>
+    <h2>Per status</h2>
     <ol>
-        {% for status in order_stati.values() %}
-        <li>{{ status }}</li>
+        {% for status in all_statuses %}
+        <li>{{ status.name }}</li>
+        {% if status in line_items_by_status %}
+        <ul>
+            {% for line_item in line_items_by_status[status] %}
+            <li>{{ line_item }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% endfor %}
     </ol>
-        <p>Wil je de code van deze pagina zien of hieraan bijdragen?
+    <p>Wil je de code van deze pagina zien of hieraan bijdragen?
         <a href="https://github.com/spijkercenter/azgewinkel-functions"
            target="_blank">Klik hier!</a>
     </p>

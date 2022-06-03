@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+from functools import total_ordering
 
 
+@total_ordering
 @dataclass
 class Customer:
     id: int
@@ -14,6 +16,9 @@ class Customer:
             shortname=raw.username,
             name=f"{raw.first_name} {raw.last_name}",
         )
+
+    def __lt__(self, other):
+        return self.shortname < other.shortname
 
     def __hash__(self):
         return self.id

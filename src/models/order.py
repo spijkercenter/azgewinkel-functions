@@ -6,14 +6,7 @@ from typing import List, Dict
 
 from .customer import Customer
 from .line_item import LineItem
-
-order_stati = {
-    "fitting": "Te bestellen door lid",
-    "pending": "Te betalen aan AZG",
-    "paid": "Betaald aan AZG",
-    "ordered": "Besteld bij Rasch",
-    "completed": "Afgeleverd in ruimte"
-}
+from .order_status import OrderStatus
 
 
 @total_ordering
@@ -23,8 +16,7 @@ class Order:
     date_created: datetime
     customer: Customer
     total: Decimal
-    status: str
-    human_status: str
+    status: OrderStatus
     line_items: List[LineItem]
 
     def __eq__(self, other):
@@ -39,16 +31,12 @@ class Order:
 
     @classmethod
     def of(cls, raw, customers: Dict[int, Customer]) -> "Order":
-        status = raw.status
-        if status in order_stati.keys():
-            status = order_stati[status]
         return Order(
             id=raw.id,
             date_created=raw.date_created,
             customer=Order.fallback_customer(raw.customer_id, customers),
             total=Decimal(raw.total),
-            status=raw.status,
-            human_status=status,
+            status=OrderStatus.of(raw.status),
             line_items=sorted([LineItem.of(li) for li in raw.line_items])
         )
 
@@ -57,4 +45,4 @@ class Order:
         try:
             return customers[customer_id]
         except KeyError:
-            return Customer(customer_id, "UNKNOWN")
+            return Customer(customer_id, "unknown", "UNKNOWN")

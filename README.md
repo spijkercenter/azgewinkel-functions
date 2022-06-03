@@ -12,4 +12,4 @@ Telkens:
 ## Deployen
 Telkens
 - `bash pack.sh`
-- Upload `deployable.zip` via https://console.cloud.google.com/functions/details/europe-west1/frietlijst?project=azgewinkel
+- Upload `deployable.zip` via hhttps://console.cloud.google.com/functions/list?project=azgewinkel
